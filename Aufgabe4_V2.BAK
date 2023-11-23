@@ -1,0 +1,67 @@
+:- [aufg4_test].
+
+%------ UNIFIKATION ------%
+occurs_check(Variable, Term) :-
+    var(Variable),
+    occurs_check_term(Variable, Term).
+
+occurs_check_term(Variable, Term) :-
+    var(Term),
+    Variable == Term,  % Variable occurs within the term
+    !, fail.
+
+occurs_check_term(Variable, Term) :-
+    var(Term),
+    not(Variable == Term).  % Variable does not occur within the term
+
+occurs_check_term(Variable, Term) :-
+    nonvar(Term),
+    Term =.. [_ | Args],
+    occurs_check_list(Variable, Args).
+
+occurs_check_list(Variable, [Arg | Tail]) :-
+    occurs_check_term(Variable, Arg),
+    occurs_check_list(Variable, Tail).
+
+occurs_check_list(_, []).
+
+%----- my_unify/2 -----%
+
+my_unify(Term1, Term2):-
+    var(Term1),
+    var(Term2),
+    Term1 = Term2.
+    
+my_unify(Term1, Term2):-
+    var(Term1),
+    nonvar(Term2),
+    occurs_check(Term1, Term2),
+    Term1 = Term2.
+    
+my_unify(Term1, Term2):-
+    var(Term2),
+    nonvar(Term1),
+    occurs_check(Term2, Term1),
+    Term1 = Term2.
+
+my_unify(Term1, Term2):-
+    nonvar(Term1),
+    nonvar(Term2),
+    occurs_check(Term1, Term2),
+    Term1=..[OP1|Args1],
+    Term2=..[OP2|Args2],
+    OP1==OP2,
+    length(Args1, Length1),
+    length(Args2, Length2),
+    Length1==Length2,
+    unifikator(Args1, Args2).
+    
+%------ HILFSPRÄDIKATE ------%
+
+%--------unifikator/2--------%
+
+unifikator([Args1H|Args1T], [Args2H|Args2T]):-
+    my_unify(Args1H, Args2H),
+    unifikator(Args1T, Args2T).
+
+unifikator([], []).

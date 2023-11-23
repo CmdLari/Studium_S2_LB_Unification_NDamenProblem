@@ -1,0 +1,32 @@
+%Löst das n-Damen-Problem durch eine Liste: Index=Spalte, Zahl=Reihe
+
+%A2: Initialisiert indem Dame 1 auf die 1 gesetzt wird
+ndamen(Anzahl, Ausgabe):- Output=[], Filler=[1], Letzte=1, append(Output, Filler, NeuerOutput), ndamenExec(Anzahl, NeuerOutput, Letzte).
+
+%%%%%Output%%%%%
+ndamenExec(Anzahl, Output, _Letzte):- Laenge=length(Output), Laenge==Anzahl, ndamen(Anzahl, Output).
+
+%Fragt die verschiedenen Schritte ab  A1: Ist die Liste abgearbeitet      %A3: Sonderfall n<4
+ndamenExec(Anzahl, Output, Letzte):- ndamenLaengenCheck(Anzahl, Output), Anzahl<4, ndamen2weiter(Anzahl, Output, Letzte).
+                                                                          %A4: Sonderfall n==4
+ndamenExec(Anzahl, Output, Letzte):- ndamenLaengenCheck(Anzahl, Output), Anzahl==4, Laenge=length(Output), Laenge\=3, ndamen2weiter(Anzahl, Output, Letzte).
+ndamenExec(Anzahl, Output, Letzte):- ndamenLaengenCheck(Anzahl, Output), Anzahl==4, Laenge=length(Output), Laenge==3, ndamenAuf2(Anzahl, Output, Letzte).
+                                                                          %A5: Ungerade Anzahl
+ndamenExec(Anzahl, Output, Letzte):- ndamenLaengenCheck(Anzahl, Output), Anzahl>4, mod(Anzahl, 2)=:=1, Laenge=length(Output), Laenge\=((Anzahl+1)/2), ndamen2weiter(Anzahl, Output, Letzte).
+ndamenExec(Anzahl, Output, Letzte):- ndamenLaengenCheck(Anzahl, Output), Anzahl>4, mod(Anzahl, 2)=:=1, Laenge=length(Output), Laenge==((Anzahl+1)/2), ndamenAuf2(Anzahl, Output, Letzte).
+                                                                          %A6: Gerade Anzahl
+ndamenExec(Anzahl, Output, Letzte):- ndamenLaengenCheck(Anzahl, Output), Anzahl>4, mod(Anzahl, 2)=:=0, Laenge=length(Output), Laenge\=(Anzahl/2), ndamen2weiter(Anzahl, Output, Letzte).
+ndamenExec(Anzahl, Output, Letzte):- ndamenLaengenCheck(Anzahl, Output), Anzahl>4, mod(Anzahl, 2)=:=0, Laenge=length(Output), Laenge==(Anzahl+/2), ndamenAuf2(Anzahl, Output, Letzte).
+
+%Versetzen der Dame auf die 2
+ndamenAuf2(Anzahl, Output, _Letzte):-NeueLetzte is 2, NeueDame=[NeueLetzte], append(Output, NeueDame, NeuerOutput), ndamenExec(Anzahl, NeuerOutput, NeueLetzte).
+
+%Versetzen der Dame um 2
+ndamen2weiter(Anzahl, Output, Letzte):-NeueLetzte is Letzte+2, NeueDame=[NeueLetzte], append(Output, NeueDame, NeuerOutput), ndamenExec(Anzahl, NeuerOutput, NeueLetzte).
+
+ndamenLaengenCheck(Anzahl, Output):-Laenge=length(Output), Anzahl\=Laenge.
+
+%%%HILFSPRÄDIKAT FÜR LISTENLÄNGE
+listenLaenge([X], Laenge):-listenLaenge([X], 0, Laenge).
+listenLaenge([Head|Tail], Counter, Laenge)-: CounterNeu=Counter+1, listenLaenge(Tail, CounterNeu, Laenge).
+listenLaenge([Haed|], Counter, Laenge):- CounterNeu=Counter+1, listenLaenge(Head, CounterNeu).

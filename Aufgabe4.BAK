@@ -1,0 +1,30 @@
+:- [aufg4_test].
+
+%%%%%%%% AUFGABE 4 %%%%%%%%
+
+%%%%%% occurs_check %%%%%%%
+% prüft ob eine Variable im Term vorkommt scheitert, falls die Variable im Term vorkommt
+
+%% A1
+occurs_check(Variable, Term):- var(Variable), var(Term), not(Variable==Term).
+
+%% A2
+occurs_check(Variable, Term):- nonvar(Term), Term=..[OP|Args], occurs_check_list(Variable, Args).
+
+%%A3
+occurs_check_list(Variable, [Arg|Tail]):- occurs_check(Variable, Arg), occurs_check_list(Variable, Tail).
+%%% Abbruchbedingung für A3
+occurs_check_list(Variable, []):-true.
+
+my_unify(Term1, Term2) :- my_unify_unify(Term1, Term2, SUB).
+
+my_unify_unify(Term1, Term2, SUB) :- var(Term1), not(var(Term2)), !, Term1 = Term2 ,Term1 = SUB, true.
+my_unify_unify(Term1, Term2, SUB) :- not(var(Term1)), !, nonvar(Term2), occurs_check(Term1, Term2), Term2=..[OP|Args], 1 == length(Args), Term1 = Term2, Term1 = SUB, true.
+my_unify_unify(Term1, Term2, SUB) :- nonvar(Term1), not(var(Term2)), !, occurs_check(Term1, Term2), Term1=..[OP|Args], 1 == length(Args), Term1 = Term2, Term1 = SUB, true.
+
+my_unify_unify(Term1, Term2, SUB) :- nonvar(Term1), nonvar(Term2), occurs_check(Term1, Term2), Term1=..[OP1|Args1], Term2=..[OP2|Args2], OP1 == OP2, length(Args1) == length(Args2), my_unify_unify_unify(Args1, Args2).
+
+my_unify_unify_unify([A1H|A1T], [A2H|A2T]) :- my_unify_unify(A1H, A2H, SUB).
+my_unify_unify_unify([A1H|[]], [A2H|[]]) :- A1H = A2H, A1H = SUB, true.
+?
+

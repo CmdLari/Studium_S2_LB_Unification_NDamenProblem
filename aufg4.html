@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html dir="ltr" style="direction: ltr;" lang="de-de"><head>
+
+
+
+
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.78 [en] (Win98; U) [Netscape]"><title>Aufgabe 4</title><!-- 
+
+     file: Tutorial.html rmi10
+
+   author: T. Graf
+
+  history: 20. March 1998 - file creation - graf
+
+--><!-- ----------------------------------------------------------------- -->
+   
+
+
+<script language="JavaScript">
+
+
+
+
+
+
+
+
+
+
+
+function frage(antwort)
+
+
+
+
+
+{
+
+
+
+
+
+	if ( antwort == "OnlineBank" )
+
+
+
+
+
+	{
+
+
+
+
+
+		alert("Richtig, die Klasse, welche die Remote Methoden anbietet muß mit dem rmic kompiliert werden!");
+
+
+
+
+
+	}
+
+
+
+
+
+	else
+
+
+
+
+
+	{
+
+
+
+
+
+		alert ("Leider falsch");
+
+
+
+
+
+	}
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+  </script></head><body bgcolor="#ffffff">
+
+<h1><b>Aufgabe 4</b></h1><span style="font-family: Helvetica,Arial,sans-serif;">Zulässige Prolog-Prädikate sind: </span><span style="font-family: monospace;">var/1</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">nonvar/1</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">write/1</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">writeln/1</span>, <span style="font-family: monospace;">fail/0</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">round/1</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">integer/1</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">max/2</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">length/2</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">append/3</span><span style="font-family: Helvetica,Arial,sans-serif;"> und </span><span style="font-family: monospace;">randset /3</span><span style="font-family: Helvetica,Arial,sans-serif;">. <br>
+.</span><span style="font-family: Helvetica,Arial,sans-serif;"></span><h2><font face="Arial"><b>Teil 1</b></font></h2><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial">In dieser Aufgabe implementieren Sie bitte den Unifikationsalgorithmus aus der Vorlesung. Implementieren Sie dazu ein Prädikat </font><font style="font-family: Helvetica,Arial,sans-serif; color: red; font-weight: bold;"><span style="font-family: monospace;">my_unify(Term1, Term2)</span></font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial">, welches </font><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">Term1</span></font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial"> mit </font><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">Term2</span></font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial"> unifiziert. Ziel der Aufgabe ist es, den in der Vorlesung vorgestellten Unifikationsalgorithmus explizit zu implementieren</font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial">. Dazu sollen Sie bitte auch den "<span style="font-style: italic;">occurs check</span>" durch das Prädikats </font><font style="font-family: Helvetica,Arial,sans-serif; color: red; font-weight: bold;"><span style="font-family: monospace;">occurs_check(Variable,Term)</span></font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial"> implementieren, das scheitert, falls die Variable im Term vorkommt. </font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial">Das bedeutet, dass eine Variable </font><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">X</span></font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial"> nicht mit einem komplexen Term unifiziert werden kann, der </font><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">X</span></font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial"> enth&#127;ält, z.B.</font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial"> der Aufruf </font><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">my_unify(X, f(X))</span></font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial">
+soll fehlschlagen (da </font><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">occurs_check(X,f(X))</span><span style="font-family: Helvetica,Arial,sans-serif;"> fehl schlägt)</span></font><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial">! Dokumentieren Sie bitte im Code, wo die einzelnen Aufgaben
+aus dem in der Vorlesung vorgestelltem <span style="font-style: italic;">Algorithmus zur Bestimmung des mgu</span> in Ihrem Code bearbeitet werden.<br><br>Falls die Unifikation erfolgreich ist, ist eine entsprechende Meldung auszugeben. Als Beispiel:<br></font><div style="margin-left: 40px;"><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">?- my_unify(h(r(a),l(X),g(g(Y))),h(X,Y,Z)).</span></font><br style="font-family: monospace;"><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">Substitution: Variable _308 mit Term r(a)</span></font><br style="font-family: monospace;"><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">Substitution: Variable _312 mit Term l(r(a))</span></font><br style="font-family: monospace;"><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">Substitution: Variable _332 mit Term g(g(l(r(a))))</span></font><br style="font-family: monospace;"><font style="font-family: Helvetica,Arial,sans-serif;"><span style="font-family: monospace;">X = r(a), </span><span style="font-family: monospace;">Y = l(r(a)), </span><span style="font-family: monospace;">Z = g(g(l(r(a)))).</span></font><br></div><font style="font-family: Helvetica,Arial,sans-serif;" face="Arial"><br>Falls die Unifikation scheitert, ist eine entsprechende Meldung auszugeben. Als Beispiel:<br></font><div style="margin-left: 40px;"><font style="font-family: monospace;">?- my_unify(X,f(X)).</font><br style="font-family: monospace;"><font style="font-family: monospace;">Substitution nicht moeglich: Variable _304 kommt in Term f(_304) vor.</font></div><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><h2><font face="Arial"><b>Teil 2</b></font></h2><font face="Arial">In dieser Aufgabe soll ein Programm zur Lösung
+des <a href="https://de.wikipedia.org/wiki/Damenproblem">Damenproblems</a> (<a href="http://www.hbmeyer.de/backtrack/achtdamen/autoacht.htm#up">Animation</a>)
+implementiert werden. Dies ist ein klassisches Problem in der
+Informatik. Ziel ist es zunächst, acht Damen auf einem Schachbrett so
+aufzustellen, dass keine zwei Damen sich </font><font face="Arial">einander
+gemäß den Schachregeln definierten Zugmöglichkeiten schlagen können
+(d.h. sich nicht die gleiche Reihe, Spalte oder Diagonale teilen)</font><font face="Arial">. Im Mittelpunkt hier steht, ein Programm zu implementieren, das selbständig eine Lösung für dieses Problem findet.<br>
+<br>
+Implementieren Sie bitte ein Prädikat </font><span style="font-family: monospace; font-weight: bold; color: red;">queens_N(N,Qs)</span><font face="Arial">, das eine Lösung des genannten Problems für eine oder mehr Damen (</font><span style="font-family: monospace;">N</span><font face="Arial"> gibt die Anzahl der Damen an) generiert. </font><font face="Arial">Stellen Sie dazu bitte die Positionen der Königinnen auf dem Schachbrett als eine
+Liste der Zahlen </font><span style="font-family: monospace;">1... N</span><font face="Arial"> dar. Für </font><span style="font-family: monospace;">N = 8</span><font face="Arial"> als Beispiel: &nbsp; </font><big><span style="font-family: monospace;">[</span><font style="font-family: monospace;">8,5,1,</font><span style="font-family: monospace;">4,2,7,3,6]</span></big><font face="Arial">
+bedeutet, dass die Königin in der ersten Spalte in Zeile 8 steht, die
+zweite Königin in der zweiten Spalte in Zeile 5, etc.</font><font face="Arial"><span style="font-weight: bold;"> </span>Es empfiehlt sich,</font><font face="Arial"> das
+<a href="https://intern.fh-wedel.de/%7Esi/seminare/ws04/Ausarbeitung/6.CLP/constraint4.html#generate">Generate-and-Test</a>
+Paradigma zu verwenden. Eventuell erstellen Sie zunächst eine Lösung für das acht Damenproblem: </font><span style="font-family: monospace; color: red;">queens_8(Qs)</span><font face="Arial">.
+und erweitern sie dann zu dem N Damenproblem. Hinweis: beachten Sie
+bitte die mögliche Laufzeit, wenn Sie eigene Tests durchführen. Bei 16
+Damen gibt es bereits 1.846.955 eindeutige Lösungen!</font><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"><br>
+<br>
+</span><font face="Arial"><span style="font-weight: bold;">Zulässige Prolog-Prädikate</span> sind: </font><span style="font-family: monospace;">var/1</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">nonvar/1</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">write/1</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">writeln/1</span>, <span style="font-family: monospace;">fail/0</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">round/1</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">integer/1</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">max/2</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">length/2</span><span style="font-family: monospace;"></span>, <span style="font-family: monospace;">append/3</span><span style="font-family: Helvetica,Arial,sans-serif;">, </span><span style="font-family: monospace;">randset/3</span><span style="font-family: Helvetica,Arial,sans-serif;"> sowie <span style="font-family: monospace;">permutation</span></span><span style="font-family: monospace;">/2,member/2,(is)/2,random/3</span><span style="font-family: Helvetica,Arial,sans-serif;">.</span><font face="Arial"><br>
+<br>
+</font><span style="font-family: Helvetica,Arial,sans-serif; font-weight: bold;">Z</span><span style="font-family: Helvetica,Arial,sans-serif;"><span style="font-weight: bold;">um Testen</span> verwenden Sie bitte das folgende System: <a href="aufg4_test.pl">Testsystem</a></span><span style="font-family: Helvetica,Arial,sans-serif;">
+(Aufruf: </span><span style="font-family: monospace;">test(allunify).</span><span style="font-family: Helvetica,Arial,sans-serif;"> und </span><span style="font-family: monospace;">test(allqueens).</span><span style="font-family: Helvetica,Arial,sans-serif;"> </span><span style="font-family: Helvetica,Arial,sans-serif;">oder</span><span style="font-family: Helvetica,Arial,sans-serif;"> mit den einzelnen zu implementierenden Prädikaten (z.B. </span><span style="font-family: monospace;">test(queens_8).</span><span style="font-family: Helvetica,Arial,sans-serif;">).</span><span style="font-family: Helvetica,Arial,sans-serif;"> </span><span style="font-family: Helvetica,Arial,sans-serif;">Die in Kombination des Testsystems mit Ihrer Implementierung erstellten Ausgaben <span style="font-weight: bold;">sind bitte der Abgabe als *.pdf mit beizufügen</span>.
+Dieser Test entbindet Sie nicht von eigenen Tests. Es ist
+durchausmöglich, dass dieser Test durchläuft, Ihre Software dennoch
+nicht korrekt ist und den Vorgaben entspricht. Funktioniert der Test
+bis zur
+Abgabe nicht, <span style="font-weight: bold;">ist dies bei der finalen Abgabe anzugeben</span> und es ist eine Analyse
+mitzuliefern, woran dies liegen könnte. </span><span style="font-family: Helvetica,Arial,sans-serif;">Bei Fehlermeldungen
+aus dem gegebenen Testsystem melden Sie sich bitte unmittelbar mit dem
+gesamten eigenen Code, dem
+Entwurf und der Fehlermeldung bei mir per E-Mail.</span><span style="font-family: Helvetica,Arial,sans-serif;"> <br>
+</span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span>
+<h2 style="font-family: Arial;">Abnahme<br>
+</h2>
+<span style="font-family: Arial;"></span><span style="font-family: Arial;"></span><span style="font-family: Helvetica,Arial,sans-serif;">Bis Donnerstagabend </span><span style="font-family: Helvetica,Arial,sans-serif;">20:00 Uhr</span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;">, eine Woche vor dem Praktikumstermin</span><span style="font-weight: bold; font-family: Helvetica,Arial,sans-serif;"> </span><span style="font-family: Helvetica,Arial,sans-serif;">kann der</span><span style="font-family: Helvetica,Arial,sans-serif;"> </span><span style="font-weight: bold; font-family: Helvetica,Arial,sans-serif;"><a href="Entwurf.pdf">Entwurf</a>&nbsp;
+</span><span style="font-family: Helvetica,Arial,sans-serif;">(der inhaltliche Plan) für </span><span style="font-family: Helvetica,Arial,sans-serif;"> die Aufgabe
+</span><span style="font-weight: bold; font-family: Helvetica,Arial,sans-serif;">als
+*.pdf</span><span style="font-family: Helvetica,Arial,sans-serif;"> Dokument (</span><a style="font-family: Helvetica,Arial,sans-serif;" href="PFormal.zip">Dokumentationskopf</a><span style="font-family: Helvetica,Arial,sans-serif;"> nicht vergessen!) </span><span style="font-family: Helvetica,Arial,sans-serif;">mir</span><span style="font-family: Helvetica,Arial,sans-serif;"> per E-Mail </span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;">(</span><span style="font-family: Helvetica,Arial,sans-serif;">mit cc an den/die Teampratner_in)</span><span style="font-family: Helvetica,Arial,sans-serif;"> </span><span style="font-family: Helvetica,Arial,sans-serif;">zugesendet werden. Beachten Sie die Vorgaben zu einem Entwurf!</span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"> <span style="font-weight: bold;"></span><br></span><span style="font-family: Helvetica,Arial,sans-serif;">&nbsp;<br></span><span style="font-family: Helvetica,Arial,sans-serif;"><span style="font-weight: bold;">Am Abend</span> </span><span style="font-weight: bold; font-family: Helvetica,Arial,sans-serif;">vor dem Praktikum ist bis</span><span style="font-family: Helvetica,Arial,sans-serif;"> </span><span style="font-weight: bold; font-family: Helvetica,Arial,sans-serif;">20:00 Uhr </span><span style="font-family: Helvetica,Arial,sans-serif;">bitte die finale <span style="font-weight: bold;">Abgabe</span> als <span style="font-weight: bold;">*.zip Dokument</span></span><span style="font-family: Helvetica,Arial,sans-serif; font-weight: bold;"></span><span style="font-family: Helvetica,Arial,sans-serif;"> einzusenden: </span><span style="font-family: Helvetica,Arial,sans-serif;">finaler Stand </span><span style="font-family: Helvetica,Arial,sans-serif;">(als *.zip</span><span style="font-family: Helvetica,Arial,sans-serif;"> mit cc an Teampartner_in</span><span style="font-family: Helvetica,Arial,sans-serif;">) </span><span style="font-family: Helvetica,Arial,sans-serif;">per E-Mail </span><span style="font-family: Helvetica,Arial,sans-serif;">abgeben</span><span style="font-family: Helvetica,Arial,sans-serif;">,
+bestehend aus</span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"><br></span>
+<ol>
+<li><span style="font-family: Helvetica,Arial,sans-serif;">dem Entwurf zur Aufgabe.</span></li><li><span style="font-family: Helvetica,Arial,sans-serif;">dem von Ihnen entwickleten Code zur Lösung der Aufgabe, der alle Vorgaben
+erfüllen muss. </span><span style="font-family: Helvetica,Arial,sans-serif;"><span style="font-weight: bold; color: black;">In den
+Sourcedateien ist auf den Entwurf zu verweisen</span>,
+um die Umsetzung der
+Vorgaben zu dokumentieren.</span><span style="font-family: Helvetica,Arial,sans-serif;">&nbsp;</span></li><li><span style="font-family: Helvetica,Arial,sans-serif;">den</span><span style="font-family: Helvetica,Arial,sans-serif;"> Bildschirmausgaben der oben beschriebenen Test</span><span style="font-family: Helvetica,Arial,sans-serif;">s. </span><span style="font-family: Helvetica,Arial,sans-serif;">Achtung: die vorgegebenen Tests entbinden Sie nicht von eigenen Tests und sichert keine Abnahme zu! </span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span></li>
+</ol>
+
+
+
+<span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"> </span><span style="font-family: Helvetica,Arial,sans-serif;">Die Abgabe
+wird als Abgabe gewertet, wenn diese die beschriebenen Tests erfolgreich
+durchläuft und der Entwurf mindestens ausreichende Quakität hat. Dies sichert jedoch keine erfolgreiche Abnahme zu.<br>
+<br>
+</span><span style="font-weight: bold; font-family: Helvetica,Arial,sans-serif;"></span>
+<span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;">Am Tag des
+Praktikums findet eine Besprechung mit den jeweiligen Teams statt. </span><span style="font-family: Helvetica,Arial,sans-serif;">Die </span><span style="font-weight: bold; font-family: Helvetica,Arial,sans-serif;">Besprechung
+muss erfolgreich absolviert werden</span><span style="font-family: Helvetica,Arial,sans-serif;">, um weiter
+am Praktikum teilnehmen zu können.</span><span style="font-family: Helvetica,Arial,sans-serif;"> Bei der&nbsp;</span><span style="font-family: Helvetica,Arial,sans-serif;">Besprechung</span><span style="font-family: Helvetica,Arial,sans-serif;"> handelt es sich nicht um die Abnahme!</span><span style="font-family: Helvetica,Arial,sans-serif;"><br>
+</span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-weight: bold; color: rgb(255, 0, 0); font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><br style="font-family: Helvetica,Arial,sans-serif;">
+
+<span style="font-family: Helvetica,Arial,sans-serif;"><span style="font-weight: bold;">Beachten Sie die <a href="prakt_pvl.html">Regularien</a> zum Praktikum!</span></span><span style="font-family: Helvetica,Arial,sans-serif;"><span style="font-weight: bold;"></span></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Helvetica,Arial,sans-serif;"></span><span style="font-family: Arial;"></span>
+</body></html>
